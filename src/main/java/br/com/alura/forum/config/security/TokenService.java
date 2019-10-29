@@ -22,7 +22,7 @@ public class TokenService {
 	public String gerarToken(Authentication authenticate) {
 		Usuario logado = (Usuario) authenticate.getPrincipal();
 		Date hoje = new Date();
-		Date dataExpiracao = new Date(hoje.getTime() - Long.valueOf(expiration));
+		Date dataExpiracao = new Date(hoje.getTime() + Long.valueOf(expiration));
 		
 		return Jwts.builder()
 				.setIssuer("API de forum da Alura")
@@ -31,6 +31,16 @@ public class TokenService {
 				.setExpiration(dataExpiracao)
 				.signWith(SignatureAlgorithm.HS256, secret)
 				.compact();
+	}
+
+	public boolean isTokenValido(String token) {
+		try {
+			Jwts.parser().setSigningKey(this.secret).parseClaimsJws(token);
+			return true;
+		} catch (Exception e) {
+			System.out.println(e);
+			return false;
+		}
 	}
 
 	

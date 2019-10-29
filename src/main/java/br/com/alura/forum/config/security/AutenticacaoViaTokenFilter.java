@@ -9,17 +9,21 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.web.filter.OncePerRequestFilter;
 
-/**
- * Comentar essa classe caso haja necessidade de criar um novo token
- */
 public class AutenticacaoViaTokenFilter extends OncePerRequestFilter {
+
+	private TokenService tokenService;
+	
+	public AutenticacaoViaTokenFilter(TokenService tokenService) {
+		this.tokenService = tokenService;
+	}
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
 		
 		String token = recuperarToken(request);
-		System.out.println(token);
+		boolean valido = tokenService.isTokenValido(token);
+		System.out.println(valido);
 
 		filterChain.doFilter(request, response);
 		
