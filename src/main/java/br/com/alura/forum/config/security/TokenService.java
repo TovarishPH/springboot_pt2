@@ -39,7 +39,6 @@ public class TokenService {
 			Jwts.parser().setSigningKey(this.secret).parseClaimsJws(token);
 			return true;
 		} catch (Exception e) {
-			System.out.println(e);
 			return false;
 		}
 	}
